@@ -32,7 +32,7 @@ class SongService {
     async update(id, songData) {
         try {
             // El método update devuelve un array con el número de filas afectadas
-            const [updated] = await songs.update(songData, { where: { ID_SONG: id } });
+            const [updated] = await songs.update(songData, { where: { id_song: id } });
             if (updated) {
                 // Si se actualizó, devuelve la canción actualizada
                 return await this.getById(id);
@@ -47,7 +47,7 @@ class SongService {
     async delete(id) {
         try {
             // El método destroy devuelve el número de filas eliminadas
-            return await songs.destroy({ where: { ID_SONG: id } });
+            return await songs.destroy({ where: { id_song: id } });
         } catch (error) {
             throw new Error('Error al eliminar la canción: ' + error.message);
         }

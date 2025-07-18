@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS public.tbl_song (
 );
 
 -- Poblamos la tabla con los datos del nuevo script
-INSERT INTO public.tbl_song (SONG_NAME, SONG_PATH) VALUES
+INSERT INTO public.tbl_song (song_name, song_path) VALUES
 ('Adventure', '../songFiles/bensound-adventure.mp3'),
 ('Buddy', '../songFiles/bensound-buddy.mp3'),
 ('Dance', '../songFiles/bensound-dance.mp3'),
