@@ -1,0 +1,47 @@
+services:
+  postgres-db:
+    image: postgres:13
+    container_name: postgres_songs_db
+    restart: always
+    environment:
+      POSTGRES_USER: usr_polimusic_gr2
+      POSTGRES_PASSWORD: Politecnica1
+      POSTGRES_DB: BDD_PoliMusic_Song
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: ["postgres"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U usr_polimusic_gr2 -d BDD_PoliMusic_Song"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  node-app:
+    container_name: songs_microservice_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./.env
+    environment:
+      - DB_HOST=postgres-db
+      - DB_USER=usr_polimusic_gr2
+      - DB_PASSWORD=Politecnica1
+      - DB_NAME=BDD_PoliMusic_Song
+      - DB_PORT=5432
+      - DB_DIALECT=postgres
+      - PORT=3000
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    command: ["npm", "start"]
+
+volumes:
+  postgres-data:
